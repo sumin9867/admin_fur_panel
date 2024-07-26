@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'dart:typed_data';
 import 'package:admin_fur_care/features/adaption/application/cubit/admin_adaption_state.dart';
 import 'package:admin_fur_care/features/adaption/domain/admin_pet_model.dart';
 import 'package:admin_fur_care/features/adaption/infrastructure/admin_pet_repo.dart';
@@ -10,13 +9,14 @@ class AdminPetCubit extends Cubit<AdminPetState> {
 
   AdminPetCubit(this._adminPetsRepository) : super(AdminPetsInitial());
 
-  Future<void> addPets(AdminPetsModel pets, File image) async {
+  Future<void> addPets(
+      AdminPetsModel pets, Uint8List imageBytes, String imageName) async {
     emit(AdminPetsLoading());
     try {
-      // String imageUrl =
-      //     await _adminPetsRepository.uploadImage(image, pets.name);
-      // AdminPetsModel updatedPets = pets.copyWith(imageUrl: imageUrl);
-      await _adminPetsRepository.addpets(pets);
+      String imageUrl =
+          await _adminPetsRepository.uploadImage(imageBytes, imageName);
+      AdminPetsModel updatedPets = pets.copyWith(imageUrl: imageUrl);
+      await _adminPetsRepository.addpets(updatedPets);
       emit(AdminPetsAdded());
     } catch (e) {
       emit(AdminPetsError(e.toString()));
@@ -37,6 +37,7 @@ class AdminPetCubit extends Cubit<AdminPetState> {
     emit(AdminPetsLoading());
     try {
       await _adminPetsRepository.deletePet(id);
+      emit(AdminPetsDeleted());
     } catch (e) {
       emit(AdminPetsError(e.toString()));
     }

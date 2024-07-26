@@ -1,11 +1,14 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:admin_fur_care/core/location_type.dart';
+import 'package:admin_fur_care/core/theme/responsive_size.dart';
 import 'package:admin_fur_care/core/widget/pick_photo_button.dart';
 import 'package:admin_fur_care/features/adaption/application/cubit/admin_adaption_cubit.dart';
 import 'package:admin_fur_care/features/adaption/application/cubit/admin_adaption_state.dart';
 import 'package:admin_fur_care/features/adaption/domain/admin_pet_model.dart';
 import 'package:admin_fur_care/features/adaption/presentation/adaption_button.dart';
 import 'package:admin_fur_care/features/vet/presentation/widgets/text_field.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,7 +17,6 @@ class AddPetScreen extends StatefulWidget {
   const AddPetScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _AddPetScreenState createState() => _AddPetScreenState();
 }
 
@@ -29,15 +31,11 @@ class _AddPetScreenState extends State<AddPetScreen> {
       TextEditingController();
   final TextEditingController _contactNumberController =
       TextEditingController();
-  File? _image;
+  Uint8List? _imageBytes;
   String? _selectedLocation;
-  String? _setlectedgender;
+  String? _selectedGender;
 
-  final List<String> gender = [
-    'Male',
-    'Female',
-    'Other',
-  ];
+  final List<String> gender = ['Male', 'Female', 'Other'];
 
   @override
   void dispose() {
@@ -52,12 +50,10 @@ class _AddPetScreenState extends State<AddPetScreen> {
   }
 
   Future<void> _pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
+    final result = await FilePicker.platform.pickFiles(type: FileType.image);
+    if (result != null) {
       setState(() {
-        _image = File(image.path);
+        _imageBytes = result.files.first.bytes;
       });
     }
   }
@@ -86,92 +82,89 @@ class _AddPetScreenState extends State<AddPetScreen> {
               );
             }
           },
-          child: Form(
-            key: _formKey,
-            child: ListView(
-              children: [
-                VetTextField(
-                  controller: _nameController,
-                  labelText: 'Name',
-                  textInputAction: TextInputAction.next,
-                ),
-                VetTextField(
-                  controller: _ageController,
-                  labelText: 'Age',
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
-                ),
-                VetTextField(
-                  controller: _breedController,
-                  labelText: 'Breed',
-                  textInputAction: TextInputAction.next,
-                ),
-                VetTextField(
-                  controller: _descriptionController,
-                  labelText: 'Description',
-                  textInputAction: TextInputAction.next,
-                  maxLength: 400,
-                ),
-                DropdownButtonFormField<String>(
-                  value: _setlectedgender,
-                  decoration: const InputDecoration(
-                    labelText: 'Gender',
+          child: Container(
+            width: ScreenUtils.getWidth(context, 1),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                children: [
+                  VetTextField(
+                    controller: _nameController,
+                    labelText: 'Name',
+                    textInputAction: TextInputAction.next,
                   ),
-                  items: gender.map((String gender) {
-                    return DropdownMenuItem<String>(
-                      value: gender,
-                      child: Text(gender),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _setlectedgender = newValue;
-                    });
-                  },
-                  validator: (value) =>
-                      value == null ? 'Gender is required' : null,
-                ),
-                VetTextField(
-                  controller: _healthStatusController,
-                  labelText: 'Health Status',
-                  textInputAction: TextInputAction.next,
-                ),
-                // VetTextField(
-                //   controller: _adoptionStatusController,
-                //   labelText: 'Adoption Status',
-                //   textInputAction: TextInputAction.next,
-                // ),
-                DropdownButtonFormField<String>(
-                  value: _selectedLocation,
-                  decoration: const InputDecoration(
-                    labelText: 'Location',
+                  VetTextField(
+                    controller: _ageController,
+                    labelText: 'Age',
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.number,
                   ),
-                  items: LocationService.locations.map((String location) {
-                    return DropdownMenuItem<String>(
-                      value: location,
-                      child: Text(location),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedLocation = newValue;
-                    });
-                  },
-                  validator: (value) =>
-                      value == null ? 'Location is required' : null,
-                ),
-                VetTextField(
-                  controller: _contactNumberController,
-                  labelText: 'Contact Number',
-                  textInputAction: TextInputAction.done,
-                  keyboardType: TextInputType.phone,
-                ),
-                if (_image != null) Image.file(_image!),
-                TakePhotoButton(onPressed: _pickImage),
-                const SizedBox(height: 10),
-
-                AdaptionButtton(onPressed: _addPet, label: "Add Pet")
-              ],
+                  VetTextField(
+                    controller: _breedController,
+                    labelText: 'Breed',
+                    textInputAction: TextInputAction.next,
+                  ),
+                  VetTextField(
+                    controller: _descriptionController,
+                    labelText: 'Description',
+                    textInputAction: TextInputAction.next,
+                    maxLength: 400,
+                  ),
+                  DropdownButtonFormField<String>(
+                    value: _selectedGender,
+                    decoration: const InputDecoration(
+                      labelText: 'Gender',
+                    ),
+                    items: gender.map((String gender) {
+                      return DropdownMenuItem<String>(
+                        value: gender,
+                        child: Text(gender),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedGender = newValue;
+                      });
+                    },
+                    validator: (value) =>
+                        value == null ? 'Gender is required' : null,
+                  ),
+                  VetTextField(
+                    controller: _healthStatusController,
+                    labelText: 'Health Status',
+                    textInputAction: TextInputAction.next,
+                  ),
+                  DropdownButtonFormField<String>(
+                    value: _selectedLocation,
+                    decoration: const InputDecoration(
+                      labelText: 'Location',
+                    ),
+                    items: LocationService.locations.map((String location) {
+                      return DropdownMenuItem<String>(
+                        value: location,
+                        child: Text(location),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedLocation = newValue;
+                      });
+                    },
+                    validator: (value) =>
+                        value == null ? 'Location is required' : null,
+                  ),
+                  VetTextField(
+                    controller: _contactNumberController,
+                    labelText: 'Contact Number',
+                    textInputAction: TextInputAction.done,
+                    keyboardType: TextInputType.phone,
+                  ),
+                  if (_imageBytes != null) Image.memory(_imageBytes!),
+                  TakePhotoButton(onPressed: _pickImage),
+                  const SizedBox(height: 10),
+                  AdaptionButtton(onPressed: _addPet, label: "Add Pet"),
+                ],
+              ),
             ),
           ),
         ),
@@ -181,7 +174,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
 
   void _addPet() {
     if (_formKey.currentState!.validate() &&
-        _image != null &&
+        _imageBytes != null &&
         _selectedLocation != null) {
       AdminPetsModel pet = AdminPetsModel(
         id: '',
@@ -194,10 +187,10 @@ class _AddPetScreenState extends State<AddPetScreen> {
         description: _descriptionController.text,
         healthStatus: _healthStatusController.text,
         adoptionStatus: "0",
-        gender: _setlectedgender!,
+        gender: _selectedGender!,
       );
 
-      context.read<AdminPetCubit>().addPets(pet, _image!);
+      context.read<AdminPetCubit>().addPets(pet, _imageBytes!, "kmsdncmdcn");
     }
   }
 }

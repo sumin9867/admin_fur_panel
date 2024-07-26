@@ -64,6 +64,8 @@ dependencies:
   dart_firebase_admin: ^0.3.1
   nepali_date_picker: ^6.0.1
   clean_nepali_calendar: ^2.0.1
+  file_picker: ^8.0.6
+  vsync_provider: ^0.5.0
 
 dev_dependencies:
   flutter_test:

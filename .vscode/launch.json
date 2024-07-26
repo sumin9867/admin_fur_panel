@@ -5,11 +5,22 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "chrome",
+            "name": "pet all",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}"
+            "type": "dart",
+            "args": [ "--web-renderer=html"]
+        },
+        {
+            "name": "pet all (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "pet all (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
         }
     ]
 }

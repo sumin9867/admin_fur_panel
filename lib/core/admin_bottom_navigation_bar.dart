@@ -1,11 +1,10 @@
+import 'package:admin_fur_care/core/theme/app_color.dart';
+import 'package:admin_fur_care/features/adaption/presentation/admin_pet_list_screen.dart';
+import 'package:admin_fur_care/features/auth/profile/presentation/profile_screen.dart';
+import 'package:admin_fur_care/features/incident/presentation/admin_incident_screen.dart';
+import 'package:admin_fur_care/features/users/presentation/user_detail_screen.dart';
+import 'package:admin_fur_care/features/vet/presentation/admin_vet_list_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:pet_care_app/admin/adaption/presentation/admin_pet_list_screen.dart';
-import 'package:pet_care_app/admin/adaption_requets_screen.dart/presentation/admin_adaption_request_list_screen.dart';
-import 'package:pet_care_app/admin/incident/presentation/admin_incident_screen.dart';
-import 'package:pet_care_app/admin/users/presentation/user_detail_screen.dart';
-import 'package:pet_care_app/admin/vet/presentation/admin_vet_list_screen.dart';
-import 'package:pet_care_app/core/theme/app_color.dart';
-import 'package:pet_care_app/user/features/profile/presentation/profile_screen.dart';
 
 class AdminPetBottomNavigationBar extends StatefulWidget {
   const AdminPetBottomNavigationBar({super.key});
@@ -50,7 +49,7 @@ class _AdminPetBottomNavigationBarState
         children: const <Widget>[
           AdminUserDetail(),
           AdminPetAdaptionList(),
-          AdminPetAdaptionRequestList(),
+          AdminPetAdaptionList(),
           AdminIncidentScreen(),
           AdminVetListScreen(),
           ProfileScreen()

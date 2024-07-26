@@ -11,15 +11,10 @@ class AdminUserDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Users List'),
-      ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0), // More padding for web view
         child: BlocBuilder<UsersCubit, UsersState>(
           builder: (context, state) {
-            print(state);
             if (state is UsersLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
@@ -30,109 +25,112 @@ class AdminUserDetail extends StatelessWidget {
                   child: Text("No Users Listed"),
                 );
               }
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Card(
-                    color: AppColor.primary,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Total Users: ${state.users.length}',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: state.users.length,
-                      itemBuilder: (context, index) {
-                        final user = state.users[index];
-                        return Card(
-                          color: Colors.white,
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 6, horizontal: 8),
-                          elevation: 4,
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              radius: 20,
-                              backgroundColor: Colors.grey[200],
-                              child: ClipOval(
-                                child: user.profileImageUrl != null &&
-                                        user.profileImageUrl!.isNotEmpty
-                                    ? CachedNetworkImage(
-                                        imageUrl: user.profileImageUrl!,
-                                        placeholder: (context, url) =>
-                                            const Center(
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                        errorWidget: (context, url, error) =>
-                                            Text(
-                                          user.name.characters.first
-                                              .toUpperCase(),
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                Container(
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            image: DecorationImage(
-                                              image: imageProvider,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    : Text(
-                                        user.name.characters.first
-                                            .toUpperCase(),
-                                        style: const TextStyle(
-                                          fontSize: 30.0,
-                                          fontWeight: FontWeight.bold,
+              return ResponsiveLayout(
+                child: ListView.builder(
+                  itemCount: state.users.length,
+                  itemBuilder: (context, index) {
+                    final user = state.users[index];
+                    return Card(
+                      color: Colors.white,
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20),
+                      elevation: 6,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 30, // Larger for web view
+                          backgroundColor: Colors.grey[200],
+                          child: ClipOval(
+                            child: user.profileImageUrl != null &&
+                                    user.profileImageUrl!.isNotEmpty
+                                ? CachedNetworkImage(
+                                    imageUrl: user.profileImageUrl!,
+                                    placeholder: (context, url) => const Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                    errorWidget: (context, url, error) => Text(
+                                      user.name.characters.first.toUpperCase(),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
-                              ),
-                            ),
-                            title: Text(
-                              user.name,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 4),
-                                Text('Email: ${user.email}'),
-                                Text('Location: ${user.location}'),
-                                Text('ID: ${user.id}'),
-                              ],
-                            ),
+                                    ),
+                                  )
+                                : Text(
+                                    user.name.characters.first.toUpperCase(),
+                                    style: const TextStyle(
+                                      fontSize: 40.0, // Larger for web view
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
+                        ),
+                        title: Text(
+                          user.name,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 8),
+                            Text('Email: ${user.email}'),
+                            Text('Location: ${user.location}'),
+                            Text('ID: ${user.id}'),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
               );
             } else if (state is UsersError) {
               return Center(
-                child: Text("Error fetching users ${state.message}"),
+                child: Text("Error fetching users: ${state.message}"),
               );
             } else {
-              return Container(
-                child: Text("cant load"),
+              return Center(
+                child: Text("Can't load data"),
               );
             }
           },
         ),
       ),
+    );
+  }
+}
+
+// Responsive layout widget
+class ResponsiveLayout extends StatelessWidget {
+  final Widget child;
+
+  const ResponsiveLayout({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth > 800) {
+          // Web view
+          return Row(
+            children: [
+              Expanded(
+                child: child,
+              ),
+            ],
+          );
+        } else {
+          // Mobile view
+          return child;
+        }
+      },
     );
   }
 }
