@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:admin_fur_care/core/location_type.dart';
 import 'package:admin_fur_care/core/theme/responsive_size.dart';
@@ -11,12 +10,12 @@ import 'package:admin_fur_care/features/vet/presentation/widgets/text_field.dart
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AddPetScreen extends StatefulWidget {
   const AddPetScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _AddPetScreenState createState() => _AddPetScreenState();
 }
 
@@ -82,7 +81,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
               );
             }
           },
-          child: Container(
+          child: SizedBox(
             width: ScreenUtils.getWidth(context, 1),
             child: Form(
               key: _formKey,

@@ -1,4 +1,3 @@
-import 'package:admin_fur_care/core/theme/app_color.dart';
 import 'package:admin_fur_care/features/users/application/cubit/user_detail_cubit.dart';
 import 'package:admin_fur_care/features/users/application/cubit/user_detail_state.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -96,7 +95,7 @@ class AdminUserDetail extends StatelessWidget {
                 child: Text("Error fetching users: ${state.message}"),
               );
             } else {
-              return Center(
+              return const Center(
                 child: Text("Can't load data"),
               );
             }
@@ -111,7 +110,7 @@ class AdminUserDetail extends StatelessWidget {
 class ResponsiveLayout extends StatelessWidget {
   final Widget child;
 
-  const ResponsiveLayout({required this.child});
+  const ResponsiveLayout({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {

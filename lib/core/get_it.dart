@@ -33,9 +33,8 @@ Future<void> setupLocators() async {
   //registering repositary
   getIt.registerLazySingleton<AuthRepository>(() => AuthRepository());
   getIt.registerLazySingleton<ProfileRepo>(() => ProfileRepo());
-  getIt.registerLazySingleton<AdminVetRepository>(() => AdminVetRepository(
-        firebaseFirestore,
-      ));
+  getIt.registerLazySingleton<AdminVetRepository>(
+      () => AdminVetRepository(firebaseFirestore, firebaseStorage));
 
   getIt.registerLazySingleton<AdminPetsRepository>(
       () => AdminPetsRepository(firebaseFirestore, firebaseStorage));

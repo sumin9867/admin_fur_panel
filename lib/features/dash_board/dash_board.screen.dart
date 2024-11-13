@@ -18,18 +18,12 @@ class MyWidget extends StatefulWidget {
   const MyWidget({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _MyWidgetState createState() => _MyWidgetState();
 }
 
 class _MyWidgetState extends State<MyWidget> {
   final colors = <Color>[Colors.indigo, Colors.blue, Colors.orange, Colors.red];
-  bool _large = true;
-
-  void _updateSize() {
-    setState(() {
-      _large = !_large;
-    });
-  }
 
   @override
   void initState() {
@@ -200,7 +194,7 @@ class _MyWidgetState extends State<MyWidget> {
 
   Widget _buildCard(BuildContext context, String title, Widget child) {
     return Expanded(
-      child: Container(
+      child: SizedBox(
         height: MediaQuery.of(context).size.height * 0.4,
         child: Card(
           elevation: 4,

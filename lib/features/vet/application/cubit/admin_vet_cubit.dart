@@ -27,7 +27,6 @@ class AdminVetCubit extends Cubit<AdminVetState> {
     emit(AdminVetLoading());
     try {
       List<AdminVetModel> vets = await _adminvetRepository.getVets();
-      print(vets);
       emit(AdminVetsLoaded(vets));
     } catch (e) {
       emit(AdminVetError(e.toString()));

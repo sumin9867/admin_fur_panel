@@ -1,4 +1,5 @@
 // repositories/vet_repository.dart
+
 import 'dart:io';
 
 import 'package:admin_fur_care/features/vet/domain/admin_vet_model.dart';
@@ -7,20 +8,21 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 class AdminVetRepository {
   final FirebaseFirestore _firestore;
-  // final FirebaseStorage _storage;
+  final FirebaseStorage _storage;
 
   AdminVetRepository(
     this._firestore,
+    this._storage,
   );
 
-  // Future<String> uploadImage(File image, String vetName) async {
-  //   String fileName =
-  //       'vets/${vetName}_${DateTime.now().millisecondsSinceEpoch}.jpg';
-  //   final Reference storageRef = _storage.ref().child(fileName);
-  //   final UploadTask uploadTask = storageRef.putFile(image);
-  //   final TaskSnapshot snapshot = await uploadTask.whenComplete(() => null);
-  //   return await snapshot.ref.getDownloadURL();
-  // }
+  Future<String> uploadImage(File image, String vetName) async {
+    String fileName =
+        'vets/${vetName}_${DateTime.now().millisecondsSinceEpoch}.jpg';
+    final Reference storageRef = _storage.ref().child(fileName);
+    final UploadTask uploadTask = storageRef.putFile(image);
+    final TaskSnapshot snapshot = await uploadTask.whenComplete(() => null);
+    return await snapshot.ref.getDownloadURL();
+  }
 
   Future<void> addVet(AdminVetModel vet) async {
     await _firestore.collection('vets').add(vet.toMap());

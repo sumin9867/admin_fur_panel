@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:admin_fur_care/core/theme/app_color.dart';
-import 'package:admin_fur_care/core/theme/responsive_size.dart';
 import 'package:admin_fur_care/features/adaption_requets_screen.dart/application/cubit/admin_adoption_request_cubit.dart';
 import 'package:admin_fur_care/features/adaption_requets_screen.dart/application/cubit/admin_adoption_request_state.dart';
 import 'package:admin_fur_care/features/adaption_requets_screen.dart/presentation/admin_adaption_request_detail.dart';
@@ -26,8 +24,6 @@ class _AdminPetAdaptionRequestListState
 
   @override
   Widget build(BuildContext context) {
-    final double containerHeight = MediaQuery.of(context).size.height * 0.6;
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),

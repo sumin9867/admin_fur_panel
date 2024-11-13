@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:admin_fur_care/features/incident/domain/injury_report_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class InjuryReportRepository {
   final FirebaseFirestore _firestore;

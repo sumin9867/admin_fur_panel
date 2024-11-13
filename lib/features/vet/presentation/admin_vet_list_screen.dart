@@ -28,7 +28,6 @@ class _AdminVetListScreenState extends State<AdminVetListScreen> {
       ),
       body: BlocBuilder<AdminVetCubit, AdminVetState>(
         builder: (context, state) {
-          print(state);
           if (state is AdminVetLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is AdminVetsLoaded) {

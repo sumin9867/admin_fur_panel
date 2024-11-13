@@ -42,84 +42,144 @@ class _AdminPetAdaptionListState extends State<AdminPetAdaptionList> {
                   child: Text("No Pet Listed"),
                 );
               }
-              return ListView.builder(
+              return GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  crossAxisSpacing: 16.0,
+
+                  // Adjusted for better aspect ratio
+                ),
                 itemCount: state.adminPetss.length,
                 itemBuilder: (context, index) {
                   final pets = state.adminPetss[index];
 
                   return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    elevation: 4,
+                    elevation: 8,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(15),
-                      leading: CircleAvatar(
-                        radius: 30,
-                        backgroundImage: NetworkImage(pets.imageUrl),
-                      ),
-                      title: Text(
-                        'Pet Name: ${pets.name}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                    shadowColor: Colors.grey.withOpacity(0.5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                          ),
+                          child: Image.network(
+                            pets.imageUrl,
+                            height: 200,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 5),
-                          Text(
-                            'Breed: Breed ${pets.breed}',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[700],
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    pets.name,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.delete),
+                                    color: AppColor.danger,
+                                    onPressed: () {
+                                      context
+                                          .read<AdminPetCubit>()
+                                          .deletepets(pets.id);
+                                      context
+                                          .read<AdminPetCubit>()
+                                          .fetchPetss();
+                                    },
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  const Icon(Icons.pets, color: Colors.blue),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Breed: ${pets.breed}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  const Icon(Icons.cake, color: Colors.pink),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Age: ${pets.age} years',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  const Icon(Icons.local_hospital,
+                                      color: Colors.red),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Health: ${pets.healthStatus}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  const Icon(Icons.transgender,
+                                      color: Colors.orange),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Gender: ${pets.gender}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  const Icon(Icons.phone, color: Colors.green),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Contact: ${pets.contactNumber}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 5),
-                          Text(
-                            'Age: ${pets.age} years',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[700],
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            'Health: ${pets.healthStatus} ',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[700],
-                            ),
-                          ),
-                          Text(
-                            'Gender: ${pets.gender} ',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[700],
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            'Contact: ${pets.contactNumber} ',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[700],
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                        ],
-                      ),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete),
-                        color: AppColor.danger,
-                        onPressed: () {
-                          context.read<AdminPetCubit>().deletepets(pets.id);
-                          context.read<AdminPetCubit>().fetchPetss();
-                        },
-                      ),
-                      onTap: () {},
+                        ),
+                      ],
                     ),
                   );
                 },
@@ -127,10 +187,13 @@ class _AdminPetAdaptionListState extends State<AdminPetAdaptionList> {
             } else if (state is AdminPetsError) {
               return Center(
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(state.message),
                     ElevatedButton(
-                        onPressed: () {}, child: const Icon(Icons.try_sms_star))
+                      onPressed: () {},
+                      child: const Icon(Icons.refresh),
+                    ),
                   ],
                 ),
               );

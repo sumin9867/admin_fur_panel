@@ -33,7 +33,7 @@ class AdminIncidentAnimalsCard extends StatelessWidget {
               injuryReports.injuryPictureUrl,
               errorBuilder: (BuildContext context, Object exception,
                   StackTrace? stackTrace) {
-                return Text('Failed to load image');
+                return const Text('Failed to load image');
               },
             )),
         title: Text(

@@ -250,6 +250,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _uploadingImage = true;
       });
 
+      // ignore: unused_local_variable
       UserModel updatedUser = UserModel(
         id: userProfileState is ProfileLoaded
             ? userProfileState.userModel.id

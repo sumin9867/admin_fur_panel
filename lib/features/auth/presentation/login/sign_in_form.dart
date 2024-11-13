@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:admin_fur_care/core/admin_bottom_navigation_bar.dart';
 import 'package:admin_fur_care/core/theme/app_color.dart';
 import 'package:admin_fur_care/features/auth/application/login_cubit/login_cubit.dart';
 import 'package:admin_fur_care/features/auth/application/login_cubit/login_state.dart';
@@ -8,10 +7,7 @@ import 'package:admin_fur_care/features/auth/presentation/sign_up/sign_up_form.d
 import 'package:admin_fur_care/features/auth/presentation/widgets/email_field.dart';
 import 'package:admin_fur_care/features/auth/presentation/widgets/password_field.dart';
 import 'package:admin_fur_care/features/auth/profile/presentation/profile_screen.dart';
-import 'package:admin_fur_care/features/dash_board/dash_board.screen.dart';
 import 'package:admin_fur_care/features/dash_board/widget/navigation_bar.dart';
-import 'package:admin_fur_care/features/incident/presentation/admin_incident_screen.dart';
-import 'package:admin_fur_care/features/users/presentation/user_detail_screen.dart';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
